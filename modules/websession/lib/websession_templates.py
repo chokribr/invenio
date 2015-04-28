@@ -966,7 +966,7 @@ class Template:
                  'x_url_close': '</a>'}
         return out
 
-    def tmpl_login_form(self, ln, referer, internal, register_available, methods, selected_method, msg=None):
+    def tmpl_login_form(self, ln, referer, internal, register_available, methods, selected_method, attempt,msg=None):
         """
         Displays a login form
 
@@ -985,6 +985,8 @@ class Template:
           - 'selected_method' *string* - The default authentication method
 
           - 'msg' *string* - The message to print before the form, if needed
+
+          - attempt  *int* - The number of login attempt
         """
 
         # load the right message language
@@ -1044,6 +1046,7 @@ class Template:
                    <td align="right">
                      <input type="hidden" name="ln" value="%(ln)s" />
                      <input type="hidden" name="referer" value="%(referer)s" />
+                     <input type="hidden" name="attempt" value="%(attempt)s" />
                      <strong><label for="p_un">%(username)s:</label></strong>
                    </td>
                    <td><input type="text" size="25" name="p_un" id="p_un" value="" /></td>
@@ -1064,6 +1067,7 @@ class Template:
                        'password' : cgi.escape(_("Password")),
                        'remember_me' : cgi.escape(_("Remember login on this computer.")),
                        'login' : cgi.escape(_("login")),
+                       'attempt':attempt
                        }
         if internal:
             out += """&nbsp;&nbsp;&nbsp;(<a href="./lost?ln=%(ln)s">%(lost_pass)s</a>)""" % {
@@ -1310,7 +1314,7 @@ class Template:
                     'x_url_close': '</a>'}
         return out
 
-    def tmpl_create_userinfobox(self, ln, url_referer, guest, username, submitter, referee, admin, usebaskets, usemessages, usealerts, usegroups, useloans, usestats):
+    def tmpl_create_userinfobox(self, ln, url_referer, guest, username, submitter, referee, admin, usebaskets, usemessages, usealerts, usegroups, useloans, usestats, attempt):
         """
         Displays the user block
 
@@ -1342,6 +1346,8 @@ class Template:
 
           - 'usestats' *boolean* - If stats are enabled for the user
 
+          - 'attempt' *int* - the number of login attempt
+
         @note: with the update of CSS classes (cds.cds ->
             invenio.css), the variables useloans etc are not used in
             this function, since they are in the menus.  But we keep
@@ -1355,12 +1361,13 @@ class Template:
         out = """<img src="%s/img/user-icon-1-20x20.gif" border="0" alt=""/> """ % CFG_SITE_URL
         if guest:
             out += """%(guest_msg)s ::
-                   <a class="userinfo" href="%(sitesecureurl)s/youraccount/login?ln=%(ln)s%(referer)s">%(login)s</a>""" % {
+                   <a class="userinfo" href="%(sitesecureurl)s/youraccount/login?ln=%(ln)s&attempt=%(attempt)s%(referer)s">%(login)s</a>""" % {
                      'sitesecureurl': CFG_SITE_SECURE_URL,
                      'ln' : ln,
                      'guest_msg' : _("guest"),
                      'referer' : url_referer and ('&amp;referer=%s' % urllib.quote(url_referer)) or '',
-                     'login' : _('login')
+                     'login' : _('login'),
+                     'attempt' : attempt
                    }
         else:
             out += """

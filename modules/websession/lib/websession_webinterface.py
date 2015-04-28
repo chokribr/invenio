@@ -853,8 +853,13 @@ class WebInterfaceYourAccountPages(WebInterfaceDirectory):
             'provider': (str, None),
             'action': (str, ''),
             'remember_me' : (str, ''),
-            'referer': (str, '')})
-
+            'referer': (str, ''),
+            'attempt': (int, '')})
+         #attempt :number of login attempt
+        if  args['attempt']:
+            attempt =  args['attempt']
+        else :
+            attempt = 0      
         if CFG_OPENAIRE_SITE:
             from invenio.config import CFG_OPENAIRE_PORTAL_URL
             if CFG_OPENAIRE_PORTAL_URL:
@@ -910,8 +915,12 @@ class WebInterfaceYourAccountPages(WebInterfaceDirectory):
                 pass
         if not CFG_EXTERNAL_AUTH_USING_SSO:
             if (args['p_un'] is None or not args['login_method']) and (not args['login_method'] in ['openid', 'oauth1', 'oauth2']):
+                attempt=attempt+1
+                # if the number of attempt allowded is is reached
+                if (attempt>3):
+                    return webuser.page_not_authorized(req, CFG_SITE_SECURE_URL +( "/youraccount/login?ln=%s " % args['ln'])+("& %s" % attempt) )
                 return page(title=_("Login"),
-                            body=webaccount.create_login_page_box(args['referer'], args['ln']),
+                            body=webaccount.create_login_page_box(args['referer'], args['ln'],attempt),
                             navtrail="""<a class="navtrail" href="%s/youraccount/display?ln=%s">""" % (CFG_SITE_SECURE_URL, args['ln']) + _("Your Account") + """</a>""",
                             description="%s Personalize, Main page" % CFG_SITE_NAME_INTL.get(args['ln'], CFG_SITE_NAME),
                             keywords="%s , personalize" % CFG_SITE_NAME_INTL.get(args['ln'], CFG_SITE_NAME),
@@ -955,7 +964,7 @@ class WebInterfaceYourAccountPages(WebInterfaceDirectory):
                     mess = CFG_WEBACCESS_WARNING_MSGS[15] % cgi.escape(args['login_method'])
             if not mess:
                 mess = CFG_WEBACCESS_WARNING_MSGS[msgcode] % cgi.escape(args['login_method'])
-            act = CFG_SITE_SECURE_URL + '/youraccount/login%s' % make_canonical_urlargd({'ln' : args['ln'], 'referer' : args['referer']}, {})
+            act = CFG_SITE_SECURE_URL + '/youraccount/login%s' % make_canonical_urlargd({'ln' : args['ln'], 'attempt': attempt,'referer' : args['referer']}, {})
             return page(title=_("Login"),
                         body=webaccount.perform_back(mess, act, _("login"), args['ln']),
                         navtrail="""<a class="navtrail" href="%s/youraccount/display?ln=%s">""" % (CFG_SITE_SECURE_URL, args['ln']) + _("Your Account") + """</a>""",

@@ -906,6 +906,13 @@ def create_userinfobox_body(req, uid, language="en"):
     """Create user info box body for user UID in language LANGUAGE."""
 
     if req:
+        # attempt: the number of login attempt
+        attempt = 0
+        args = req.get_args()
+     # extract the attempt argument if exist
+        if  str.find(args,'attempt=')>-1:
+            attempt = int (float(args[str.index(args,'attempt=')+8]))
+            
         if req.is_https():
             url_referer = CFG_SITE_SECURE_URL + req.unparsed_uri
         else:
@@ -930,7 +937,8 @@ def create_userinfobox_body(req, uid, language="en"):
                                             usealerts=user_info['precached_usealerts'],
                                             usegroups=user_info['precached_usegroups'],
                                             useloans=user_info['precached_useloans'],
-                                            usestats=user_info['precached_usestats']
+                                            usestats=user_info['precached_usestats'],
+                                            attempt=attempt
                                             )
     except OperationalError:
         return ""
