@@ -908,11 +908,14 @@ def create_userinfobox_body(req, uid, language="en"):
     if req:
         # attempt: the number of login attempt
         attempt = 0
-        args = req.get_args()
-     # extract the attempt argument if exist
-        if  str.find(args,'attempt=')>-1:
-            attempt = int (float(args[str.index(args,'attempt=')+8]))
-            
+        
+        if req.get_post_form():
+            form = req.get_post_form()
+           
+            args =invenio.webinterface_handler.wash_urlargd(form, {
+            'attempt': (int, '')})
+            attempt = args['attempt']
+        
         if req.is_https():
             url_referer = CFG_SITE_SECURE_URL + req.unparsed_uri
         else:
