@@ -4085,7 +4085,7 @@ function onAutosuggest(event) {
             mysel = '<table width="400" border="0"><tr><td><span class="bibeditscrollArea"><ul>';
             //create the select items..
             for (var i=0, n=suggestions.length; i < n; i++) {
-               tmpid = select_id+"-"+suggestions[i];
+               tmpid = select_id+"#"+suggestions[i];
                mysel = mysel +'<li onClick="onAutosuggestSelect(\''+tmpid+'\');">'+suggestions[i]+"</li>";
             }
             mysel = mysel+"</ul></td>"
@@ -4107,7 +4107,7 @@ function onAutosuggest(event) {
 /*put the content of the autosuggest select into the field where autoselect was lauched*/
 function onAutosuggestSelect(selectidandselval) {
   /*first take the selectid. It is the string before the first hyphen*/
-  var tmpArray = selectidandselval.split('-');
+  var tmpArray = selectidandselval.split('#');
   var selectid = tmpArray[0];
   var selval =  tmpArray[1];
   /*generate the content element id and autosuggest element id from the selectid*/
