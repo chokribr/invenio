@@ -14250,6 +14250,14 @@ msgstr ""
 #: modules/websession/lib/websession_webinterface.py:444
 #, python-format
 msgid ""
+#: modules/websession/lib/websession_templates.py:1217
+msgid "prenom"
+msgstr "Prenom"
+
+#: modules/websession/lib/websession_templates.py:1218
+msgid "nom"
+msgstr "Nom"
+
 "Unable to switch to external login method %s, because your email address is "
 "unknown to the external login system."
 msgstr ""
