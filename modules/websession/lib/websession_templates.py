@@ -1213,7 +1213,7 @@ class Template:
                 'ln' : cgi.escape(ln),
                 'email_address' : _("Email address"),
                 'prenom' : _("First Name"),
-                'nom' : _("Name"), 
+                'nom' : _("Last Name"), 
                 'mandatory' : _("mandatory"),
                 'optional' : _("optional"),
                 'example' : _("Example"),
