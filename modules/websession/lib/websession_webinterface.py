@@ -970,7 +970,8 @@ class WebInterfaceYourAccountPages(WebInterfaceDirectory):
 
     def register(self, req, form):
         args = wash_urlargd(form, {
-            'p_nickname': (str, None),
+            'p_prenom': (str, None),
+            'p_nom' : (str, None),
             'p_email': (str, None),
             'p_pw': (str, None),
             'p_pw2': (str, None),
@@ -1002,8 +1003,9 @@ class WebInterfaceYourAccountPages(WebInterfaceDirectory):
         mess = ""
         act = ""
         if args['p_pw'] == args['p_pw2']:
+            nickname = args['p_prenom'].replace(' ','_') +'_' + args['p_nom'].replace(' ','_') 
             ruid = webuser.registerUser(req, args['p_email'], args['p_pw'],
-                                        args['p_nickname'], ln=args['ln'])
+                                        nickname, ln=args['ln'])
         else:
             ruid = -2
         if ruid == 0:
