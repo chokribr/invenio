@@ -1174,11 +1174,20 @@ class Template:
                  <td></td>
                 </tr>
                 <tr>
-                 <td align="right"><strong><label for="p_nickname">%(nickname)s:</label></strong><br /><small class="important">(%(mandatory)s)</small></td>
-                 <td><input type="text" size="25" name="p_nickname" id="p_nickname" value="" /><br />
+                 <td align="right"><strong><label for="p_prenom">%(prenom)s:</label></strong><br /><small class="important">(%(mandatory)s)</small></td>
+                 <td><input type="text" size="25" name="p_prenom" id="p_prenom" value="" /><br />
                      <small><span class="quicknote">%(example)s:</span>
                      <span class="example">johnd</span></small>
                  </td>
+                 <td></td>
+                </tr>
+                <tr>
+                 <td align="right"><strong><label for="p_nom">%(nom)s:</label></strong><br /><small class="important">(%(mandatory)s)</small></td>
+                 <td><input type="text" size="25" name="p_nom" id="p_nom" value="" /><br />
+                     <small><span class="quicknote">%(example)s:</span>
+                     <span class="example">Ben Romdhane</span></small>
+                 </td>
+
                  <td></td>
                 </tr>
                 <tr>
@@ -1203,8 +1212,8 @@ class Template:
                 'referer' : cgi.escape(referer),
                 'ln' : cgi.escape(ln),
                 'email_address' : _("Email address"),
-                'nickname' : _("Nickname"),
-                'password' : _("Password"),
+                'prenom' : _("First Name"),
+                'nom' : _("Last Name"), 
                 'mandatory' : _("mandatory"),
                 'optional' : _("optional"),
                 'example' : _("Example"),
@@ -1302,7 +1311,11 @@ class Template:
                     tmp_out += """<br />&nbsp;&nbsp;&nbsp; <a href="%s/admin/bibsort/bibsortadmin.py?ln=%s">%s</a>""" % (CFG_SITE_URL, ln, _("Configure BibSort"))
                 if action == "runinfomanager":
                     tmp_out += """<br />&nbsp;&nbsp;&nbsp; <a href="%s/info/manage?ln=%s">%s</a>""" % (CFG_SITE_URL, ln, _("Run Info Space Manager"))
-            if tmp_out:
+            if tmp_out:                'prenom' : _("First Name"),                'prenom' : _("First Name"),
+                'nom' : _("Name"), 
+
+                'nom' : _("Name"), 
+
                 out += _("Here are some interesting web admin links for you:") + tmp_out
 
                 out += "<br />" + _("For more admin-level activities, see the complete %(x_url_open)sAdmin Area%(x_url_close)s.") %\
@@ -1324,7 +1337,9 @@ class Template:
 
           - 'username' *string* - The username (nickname or email)
 
-          - 'submitter' *boolean* - If the user is submitter
+          - 'submitter' *boolean* - If the user is submitter                'prenom' : _("First Name"),
+                'nom' : _("Name"), 
+
 
           - 'referee' *boolean* - If the user is referee
 
