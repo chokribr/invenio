@@ -987,7 +987,7 @@ class WebInterfaceYourAccountPages(WebInterfaceDirectory):
         # load the right message language
         _ = gettext_set_language(args['ln'])
 
-        if args['p_nickname'] is None or args['p_email'] is None:
+        if args['p_prenom'] is None or args['p_nom'] is None or args['p_email'] is None:
             return  page(title=_("Register"),
                          body=webaccount.create_register_page_box(args['referer'], args['ln']),
                          navtrail="""<a class="navtrail" href="%s/youraccount/display?ln=%s">""" % (CFG_SITE_SECURE_URL, args['ln']) + _("Your Account") + """</a>""",
@@ -1003,7 +1003,7 @@ class WebInterfaceYourAccountPages(WebInterfaceDirectory):
         mess = ""
         act = ""
         if args['p_pw'] == args['p_pw2']:
-            nickname = args['p_prenom'].replace(' ','_') +'_' + args['p_nom'].replace(' ','_') 
+            nickname = args['p_prenom'].replace(' ','_') +'.' + args['p_nom'].replace(' ','_') 
             ruid = webuser.registerUser(req, args['p_email'], args['p_pw'],
                                         nickname, ln=args['ln'])
         else:
