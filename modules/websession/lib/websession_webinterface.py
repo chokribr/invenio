@@ -1006,6 +1006,13 @@ class WebInterfaceYourAccountPages(WebInterfaceDirectory):
             nickname = args['p_prenom'].replace(' ','_') +'.' + args['p_nom'].replace(' ','_') 
             ruid = webuser.registerUser(req, args['p_email'], args['p_pw'],
                                         nickname, ln=args['ln'])
+            if ruid == 4:
+               # if The generated Nickname exist then add count of Nicknmae currency
+                per= "%'"
+                requ_sql = "SELECT count(nickname) FROM user WHERE nickname like " +"'" +nickname + per
+                res = run_sql(requ_sql)
+                nickname = nickname + str(res[0][0])
+                ruid = webuser.registerUser(req, args['p_email'], args['p_pw'], nickname, ln=args['ln'])
         else:
             ruid = -2
         if ruid == 0:
@@ -1032,7 +1039,7 @@ class WebInterfaceYourAccountPages(WebInterfaceDirectory):
             act = "/youraccount/register?ln=%s" % args['ln']
             title = _("Registration failure")
         elif ruid == 2:
-            mess = _("Desired nickname %s is invalid.") % cgi.escape(args['p_nickname'])
+            mess = _("Desired nickname %s is invalid.") % nickname
             mess += " " + _("Please try again.")
             act = "/youraccount/register?ln=%s" % args['ln']
             title = _("Registration failure")
@@ -1040,11 +1047,6 @@ class WebInterfaceYourAccountPages(WebInterfaceDirectory):
             mess = _("Supplied email address %s already exists in the database.") % cgi.escape(args['p_email'])
             mess += " " + websession_templates.tmpl_lost_your_password_teaser(args['ln'])
             mess += " " + _("Or please try again.")
-            act = "/youraccount/register?ln=%s" % args['ln']
-            title = _("Registration failure")
-        elif ruid == 4:
-            mess = _("Desired nickname %s already exists in the database.") % cgi.escape(args['p_nickname'])
-            mess += " " + _("Please try again.")
             act = "/youraccount/register?ln=%s" % args['ln']
             title = _("Registration failure")
         elif ruid == 5:
